@@ -1,0 +1,16 @@
+{
+  "name": "easyapplier-extension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "firefox": "rm ./manifest.json && ln -s manifest.firefox.json manifest.json",
+    "chrome": "rm ./manifest.json && ln -s manifest.chrome.json manifest.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.8.7"
+  }
+}
