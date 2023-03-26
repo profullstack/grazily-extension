@@ -11,10 +11,6 @@ export default defineConfig({
           dest: ".",
         },
         {
-          src: "./assets",
-          dest: ".",
-        },
-        {
           src: "./src/*",
           dest: ".",
         },
@@ -27,7 +23,7 @@ export default defineConfig({
     assetsDir: "",
     rollupOptions: {
       input: {
-        popup: join(__dirname, "popup.html"),
+        popup: join(__dirname, "src/popup.html"),
       },
     },
   },
