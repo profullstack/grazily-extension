@@ -3,8 +3,10 @@ const NS = "easyapplier";
 const b = typeof browser === "undefined" ? chrome : browser;
 
 b.runtime.onMessage.addListener((data) => {
+  console.log("data2", data);
   const { type } = data;
   console.log("type:", type);
+
   if (type === "importJSON") {
     handleImport();
   } else if (type === "exportJSON") {
@@ -42,16 +44,17 @@ async function handleLoadJSON(e) {
 
 async function handleExport() {
   const res = await b.storage.local.get(NS);
-  console.log("res: ", res[NS]);
-  const type = "application/json";
+  console.log("res: ", res);
+  const type = "application/json;charset=utf-8";
   const data = JSON.stringify(res[NS] === undefined ? {} : res[NS]);
   console.log("export data:", data);
-  const blob = new Blob([data], { type });
-  const urlObj = URL.createObjectURL(blob);
+  const blob = new Blob([{ foo: "bar" }], { type });
+  const url = URL.createObjectURL(blob);
+  // ${new Date().toISOString().replace(/:/g, "-")}
   try {
     sendMessage("downloadJSON", {
-      filename: `${NS}-${new Date().toISOString()}.json`,
-      url: urlObj,
+      filename: `${NS}-data1.json`,
+      url,
       saveAs: true,
       conflictAction: "overwrite",
     });
@@ -61,14 +64,13 @@ async function handleExport() {
 }
 
 async function sendMessage(data, opts = {}) {
-  const tabInfo = await getCurrentTab();
-
-  b.tabs.sendMessage(tabInfo[0].id, { type: data, ...opts });
+  console.log("opts2:", opts);
+  b.runtime.sendMessage({ type: data, ...opts });
 }
 
-function getCurrentTab() {
-  return b.tabs.query({
-    currentWindow: true,
-    active: true,
-  });
-}
+// function getCurrentTab() {
+//   return b.tabs.query({
+//     currentWindow: true,
+//     active: true,
+//   });
+// }

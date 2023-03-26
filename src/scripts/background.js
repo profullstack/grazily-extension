@@ -65,6 +65,7 @@ function handleExport(tab) {
 }
 
 async function sendMessage(data, opts = {}) {
+  console.log("opts1:", opts);
   const tabInfo = await getCurrentTab();
 
   b.tabs.sendMessage(tabInfo[0].id, { type: data, ...opts });
@@ -122,13 +123,16 @@ function handleImport(tab) {
 }
 
 b.runtime.onMessage.addListener(async (data) => {
+  console.log("data1", data);
   const { type } = data;
+
   if (type === "downloadJSON") {
     await handleDownload(data);
   }
 });
 
 async function handleDownload(data) {
+  console.log("handle download:", data);
   delete data.type;
   const id = await b.downloads.download(data);
   b.downloads.erase({ id });
