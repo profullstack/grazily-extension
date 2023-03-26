@@ -10,7 +10,8 @@
     "declarativeContent",
     "activeTab",
     "scripting",
-    "tabs"
+    "tabs",
+    "<all_urls>"
   ],
   "background": {
     "page": "bg.html"
