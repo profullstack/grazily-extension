@@ -1,4 +1,4 @@
-// import { NS, importJsonData, exportJsonData } from "./utils/index.js";
+import { NS, importJsonData, exportJsonData } from "./utils/index.js";
 // Create context menu items
 const createContextMenuItem = (menuItem) => {
   if (typeof browser !== "undefined") {
