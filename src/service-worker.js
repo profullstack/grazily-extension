@@ -12,10 +12,6 @@ createContextMenuItem({
   id: "parentMenuItem",
   title: "Easy Applier",
   contexts: ["page"],
-  icons: {
-    16: "assets/icon-16.png",
-    48: "assets/icon-48.png",
-  },
 });
 
 // Child menu items
