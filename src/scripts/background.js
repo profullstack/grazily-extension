@@ -40,12 +40,12 @@ const handleMenuClick = (info, tab) => {
     case "childMenuItem1":
       // Perform the desired action for Child Menu Item 1
       console.log("Import clicked");
-      handleImport();
+      handleImport(tab);
       break;
     case "childMenuItem2":
       // Perform the desired action for Child Menu Item 2
       console.log("Export clicked");
-      handleExport();
+      handleExport(tab);
       break;
   }
 };
@@ -56,12 +56,44 @@ if (typeof browser !== "undefined") {
   chrome.contextMenus.onClicked.addListener(handleMenuClick);
 }
 
-function handleExport() {
+function handleExport(tab) {
   console.log("Handle export");
+  exportJson(tab);
   // exportJsonData(NS + "-profile.json");
 }
 
-function handleImport() {
+function exportJson(tab) {
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    function: exportFromStorage,
+    args: [NS],
+  });
+}
+
+function exportFromStorage(NS) {
+  console.log("NS:", NS);
+  const data = localStorage.getItem(NS);
+  console.log("data1: ", data); // Replace this with the data you want to export
+  const jsonString = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonString], {
+    type: "application/json;charset=utf-8",
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "data.json";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJson(tab) {
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    files: ["./utils/import.js"],
+  });
+}
+
+function handleImport(tab) {
   console.log("Handle import");
   // importJsonData();
 }

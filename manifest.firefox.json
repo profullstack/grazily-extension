@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Easy Applier",
   "version": "1.0",
-  "permissions": ["contextMenus", "menus"],
+  "permissions": ["contextMenus", "menus", "storage", "declarativeContent", "activeTab", "scripting"],
   "background": {
     "page": "bg.html"
   },
