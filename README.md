@@ -1,0 +1,1 @@
+# Easy Applier Chrome Extension
