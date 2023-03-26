@@ -17,7 +17,6 @@ class EasyApplier extends BaseElement {
         <div id="${this.ns}">
           <h1>Easy Applier</h1>
           <pre>${JSON.stringify(this.jsonData, null, 2)}</pre>
-          <button id="export">Export Profile</button>
           Import profiles: <input type="file" id="json-file-input" accept="application/json" />
         </div>
       `;
@@ -36,8 +35,6 @@ class EasyApplier extends BaseElement {
   }
 
   addEvents() {
-    this.exportButton = this.shadowRoot.querySelector("#export");
-    this.exportButton.addEventListener("click", this.handleExport);
     this.jsonFileInput = this.shadowRoot.querySelector("#json-file-input");
     this.jsonFileInput.addEventListener("change", this.handleFileChange);
     this.addEventListener("update", this.render);
@@ -45,7 +42,6 @@ class EasyApplier extends BaseElement {
 
   removeEvents(initial = false) {
     if (initial) return;
-    this.exportButton.removeEventListener("click", this.handleExport);
     this.jsonFileInput.removeEventListener("change", this.handleFileChange);
     this.removeEventListener("update", this.render);
   }

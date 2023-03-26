@@ -6,7 +6,6 @@ export default class BaseElement extends HTMLElement {
     this.importJsonData = this.importJsonData.bind(this);
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
-    this.exportJsonData = this.exportJsonData.bind(this);
 
     this.attachShadow({ mode: "open" });
     this.loadCSS("./styles/main.css");
@@ -50,19 +49,19 @@ export default class BaseElement extends HTMLElement {
     this.triggerUpdate();
   }
 
-  exportJsonData(filename = "data.json") {
-    const dataStr = JSON.stringify(this.jsonData, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    link.click();
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-      link.remove();
-    }, 0);
-  }
+  // exportJsonData(filename = "data.json") {
+  //   const dataStr = JSON.stringify(this.jsonData, null, 2);
+  //   const blob = new Blob([dataStr], { type: "application/json" });
+  //   const url = URL.createObjectURL(blob);
+  //   const link = document.createElement("a");
+  //   link.href = url;
+  //   link.download = filename;
+  //   link.click();
+  //   setTimeout(() => {
+  //     URL.revokeObjectURL(url);
+  //     link.remove();
+  //   }, 0);
+  // }
 
   async triggerUpdate() {
     const event = new CustomEvent("update");

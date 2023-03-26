@@ -1,3 +1,5 @@
+import { NS, importJsonData, exportJsonData } from "./utils/index.js";
+
 // Create context menu items
 const createContextMenuItem = (menuItem) => {
   if (typeof browser !== "undefined") {
@@ -12,10 +14,6 @@ createContextMenuItem({
   id: "parentMenuItem",
   title: "Easy Applier",
   contexts: ["page"],
-  icons: {
-    16: "assets/icon-16.png",
-    48: "assets/icon-48.png",
-  },
 });
 
 // Child menu items

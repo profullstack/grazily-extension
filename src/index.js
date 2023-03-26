@@ -1,2 +1,1 @@
-import "./easy-applier.js";
-// import './styles/main.css';
+import "./components/easy-applier.js";
