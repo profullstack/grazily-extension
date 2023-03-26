@@ -1,10 +1,12 @@
-class EasyApplier extends HTMLElement {
-    constructor() {
-      super();
-  
-      const shadowRoot = this.attachShadow({ mode: 'open' });
-  
-      shadowRoot.innerHTML = `
+import BaseElement from "./base.js";
+
+class EasyApplier extends BaseElement {
+  constructor() {
+    super();
+
+    const shadowRoot = this.attachShadow({ mode: "open" });
+
+    shadowRoot.innerHTML = `
         <style>
           :host {
             display: block;
@@ -20,8 +22,7 @@ class EasyApplier extends HTMLElement {
           <h2>Hello from My Component</h2>
         </div>
       `;
-    }
   }
-  
-  customElements.define('easy-applier', EasyApplier);
-  
+}
+
+customElements.define("easy-applier", EasyApplier);
