@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "firefox": "rm ./manifest.json && ln -s manifest.firefox.json manifest.json",
-    "chrome": "rm ./manifest.json && ln -s manifest.chrome.json manifest.json",
+    "build": "vite build && zip -r ./chrome-extension.zip ./dist/* && cp ./chrome-extension.zip ./firefox-extension.zip",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "^2.8.7"
+    "prettier": "^2.8.7",
+    "vite": "^4.2.1",
+    "vite-plugin-static-copy": "^0.13.1"
   }
 }
