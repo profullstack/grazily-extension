@@ -1,4 +1,6 @@
 import { NS, importJsonData, exportJsonData } from "./utils/index.js";
+const b = typeof browser === "undefined" ? chrome : browser;
+
 // Create context menu items
 const createContextMenuItem = (menuItem) => {
   if (typeof browser !== "undefined") {
@@ -62,38 +64,72 @@ function handleExport(tab) {
   // exportJsonData(NS + "-profile.json");
 }
 
-function exportJson(tab) {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: exportFromStorage,
-    args: [NS],
+async function sendMessage(data, opts = {}) {
+  const tabInfo = await getCurrentTab();
+
+  b.tabs.sendMessage(tabInfo[0].id, { type: data, ...opts });
+}
+
+function getCurrentTab() {
+  return b.tabs.query({
+    currentWindow: true,
+    active: true,
   });
 }
 
-function exportFromStorage(NS) {
-  console.log("NS:", NS);
-  const data = localStorage.getItem(NS);
-  console.log("data1: ", data); // Replace this with the data you want to export
-  const jsonString = JSON.stringify(data, null, 2);
-  const blob = new Blob([jsonString], {
-    type: "application/json;charset=utf-8",
-  });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "data.json";
-  link.click();
-  URL.revokeObjectURL(url);
-}
+// function exportJson(tab) {
+//   const b = browser || chrome;
+
+//   b.scripting.executeScript({
+//     target: { tabId: tab.id },
+//     function: exportFromStorage,
+//     args: [NS],
+//   });
+// }
+
+// async function exportFromStorage(NS) {
+//   const b = browser || chrome;
+//   console.log("NS:", NS);
+//   const data = await b.storage.local.get(NS);
+//   console.log("data1: ", data); // Replace this with the data you want to export
+//   const jsonString = JSON.stringify(data, null, 2);
+//   const blob = new Blob([jsonString], {
+//     type: "application/json;charset=utf-8",
+//   });
+//   const url = URL.createObjectURL(blob);
+//   const link = document.createElement("a");
+//   link.href = url;
+//   link.download = NS + "data.json";
+//   link.click();
+//   URL.revokeObjectURL(url);
+// }
 
 function importJson(tab) {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    files: ["./utils/import.js"],
-  });
+  sendMessage("importJSON");
+  // chrome.scripting.executeScript({
+  //   target: { tabId: tab.id },
+  //   files: ["./utils/import.js"],
+  // });
+}
+
+function exportJson() {
+  sendMessage("exportJSON");
 }
 
 function handleImport(tab) {
   console.log("Handle import");
-  // importJsonData();
+  importJson();
+}
+
+b.runtime.onMessage.addListener(async (data) => {
+  const { type } = data;
+  if (type === "downloadJSON") {
+    await handleDownload(data);
+  }
+});
+
+async function handleDownload(data) {
+  delete data.type;
+  const id = await b.downloads.download(data);
+  b.downloads.erase({ id });
 }
