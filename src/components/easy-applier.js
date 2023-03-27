@@ -15,7 +15,7 @@ class EasyApplier extends BaseElement {
         ${this.renderStyle()}
 
         <div id="${this.ns}">
-          <h1>Easy Applier</h1>
+          <div id="logo"><img src="assets/logo.svg" alt="logo" /></div>
           <pre>${JSON.stringify(this.jsonData, null, 2)}</pre>
           Import profiles: <input type="file" id="json-file-input" accept="application/json" />
         </div>

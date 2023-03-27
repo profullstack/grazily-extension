@@ -6,7 +6,6 @@
     "contextMenus",
     "storage",
     "downloads",
-    "declarativeContent",
     "activeTab",
     "scripting",
     "tabs"

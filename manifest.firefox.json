@@ -7,11 +7,9 @@
     "menus",
     "storage",
     "downloads",
-    "declarativeContent",
     "activeTab",
     "scripting",
-    "tabs",
-    "<all_urls>"
+    "tabs"
   ],
   "background": {
     "page": "bg.html"
