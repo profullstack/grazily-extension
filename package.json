@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build:firefox": "rm manifest.json && ln -s manifest.firefox.json manifest.json && vite build && zip -r ./firefox-extension.zip ./dist/*",
-    "build:chrome": "rm manifest.json && ln -s manifest.chrome.json manifest.json && vite build && zip -r ./chrome-extension.zip ./dist/*",
+    "build:firefox": "rm -f manifest.json && ln -s manifest.firefox.json manifest.json && vite build && zip -r ./firefox-extension.zip ./dist/*",
+    "build:chrome": "rm -f manifest.json && ln -s manifest.chrome.json manifest.json && vite build && zip -r ./chrome-extension.zip ./dist/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
