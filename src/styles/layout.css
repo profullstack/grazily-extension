@@ -1,5 +1,10 @@
+#logo {
+  display: block;
+  width: 20rem;
+}
+
 #logo img {
-    width: 20rem;
-    border: none;
-    display: block;
+  width: 100%;
+  border: none;
+  display: block;
 }

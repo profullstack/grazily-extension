@@ -11,23 +11,19 @@ class EasyApplier extends BaseElement {
   }
 
   async render(initial = false) {
-    this.shadowRoot.innerHTML = `
+    this.innerHTML = `
         ${this.renderStyle()}
 
         <div id="${this.ns}">
-          <div id="logo"><img src="assets/logo.svg" alt="logo" /></div>
+          <popup-header></popup-header>
           <pre>${JSON.stringify(this.jsonData, null, 2)}</pre>
-          Import profiles: <input type="file" id="json-file-input" accept="application/json" />
+          <div>Import profiles: <input type="file" id="json-file-input" accept="application/json" /></div>
         </div>
       `;
 
-    await this.loadCSS("./styles/main.css");
+    await this.loadCSS("../styles/main.css");
     this.removeEvents(initial);
     this.addEvents();
-  }
-
-  async connectedCallback() {
-    await this.render(true);
   }
 
   renderStyle() {
@@ -35,7 +31,7 @@ class EasyApplier extends BaseElement {
   }
 
   addEvents() {
-    this.jsonFileInput = this.shadowRoot.querySelector("#json-file-input");
+    this.jsonFileInput = this.innerHTML.querySelector("#json-file-input");
     this.jsonFileInput.addEventListener("change", this.handleFileChange);
     this.addEventListener("update", this.render);
   }
@@ -44,10 +40,6 @@ class EasyApplier extends BaseElement {
     if (initial) return;
     this.jsonFileInput.removeEventListener("change", this.handleFileChange);
     this.removeEventListener("update", this.render);
-  }
-
-  disconnectedCallback() {
-    this.removeEvents();
   }
 
   async handleFileChange(event) {

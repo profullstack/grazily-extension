@@ -7,7 +7,7 @@ export default class BaseElement extends HTMLElement {
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
 
-    this.attachShadow({ mode: "open" });
+    // this.attachShadow({ mode: "open" });
     this.loadCSS("./styles/main.css");
 
     this.jsonData = JSON.parse(localStorage.getItem(this.ns)) || {
@@ -16,11 +16,23 @@ export default class BaseElement extends HTMLElement {
     };
   }
 
+  async connectedCallback() {
+    await this.render(true);
+  }
+
+  disconnectedCallback() {
+    this.removeEvents();
+  }
+
   async loadCSS(url) {
     try {
       const response = await fetch(url);
       const cssText = await response.text();
-      this.shadowRoot.querySelector("#main-css").textContent = cssText;
+      const style = this.querySelector("#main-css");
+
+      if (style) {
+        style.textContent = cssText;
+      }
     } catch (error) {
       console.error("Error loading CSS:", error);
     }
