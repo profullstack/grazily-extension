@@ -8,3 +8,13 @@
   border: none;
   display: block;
 }
+
+.hide {
+  display: none !important;
+}
+
+header.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

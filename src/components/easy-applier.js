@@ -5,7 +5,6 @@ class EasyApplier extends BaseElement {
     super();
 
     this.handleFileChange = this.handleFileChange.bind(this);
-    this.render = this.render.bind(this);
     this.addEvents = this.addEvents.bind(this);
     this.removeEvents = this.removeEvents.bind(this);
   }
@@ -31,7 +30,7 @@ class EasyApplier extends BaseElement {
   }
 
   addEvents() {
-    this.jsonFileInput = this.innerHTML.querySelector("#json-file-input");
+    this.jsonFileInput = this.querySelector("#json-file-input");
     this.jsonFileInput.addEventListener("change", this.handleFileChange);
     this.addEventListener("update", this.render);
   }

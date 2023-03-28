@@ -2,6 +2,7 @@ export default class BaseElement extends HTMLElement {
   constructor() {
     super();
     this.ns = "easyapplier";
+    this.render = this.render.bind(this);
     this.handleExport = this.handleExport.bind(this);
     this.importJsonData = this.importJsonData.bind(this);
     this.loadCss = this.loadCSS.bind(this);
