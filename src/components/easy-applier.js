@@ -1,10 +1,9 @@
 import BaseElement from "./base.js";
 
-class EasyApplier extends BaseElement {
+export default class EasyApplier extends BaseElement {
   constructor() {
     super();
 
-    this.handleFileChange = this.handleFileChange.bind(this);
     this.addEvents = this.addEvents.bind(this);
     this.removeEvents = this.removeEvents.bind(this);
   }
@@ -16,7 +15,7 @@ class EasyApplier extends BaseElement {
         <div id="${this.ns}">
           <popup-header></popup-header>
           <pre>${JSON.stringify(this.jsonData, null, 2)}</pre>
-          <div>Import profiles: <input type="file" id="json-file-input" accept="application/json" /></div>
+          ${this.renderScreens()}
         </div>
       `;
 
@@ -29,26 +28,22 @@ class EasyApplier extends BaseElement {
     return `<style id="main-css"></style>`;
   }
 
+  renderScreens() {
+    return `
+      <create-profile class="screen hide"></create-profile>
+      <show-profiles class="screen hide"></show-profiles>
+      <import-data class="screen hide"></import-data>
+      <export-data class="screen hide"></export-data>
+    `;
+  }
+
   addEvents() {
-    this.jsonFileInput = this.querySelector("#json-file-input");
-    this.jsonFileInput.addEventListener("change", this.handleFileChange);
-    this.addEventListener("update", this.render);
+    super.addEvents();
   }
 
   removeEvents(initial = false) {
+    super.removeEvents(initial);
     if (initial) return;
-    this.jsonFileInput.removeEventListener("change", this.handleFileChange);
-    this.removeEventListener("update", this.render);
-  }
-
-  async handleFileChange(event) {
-    console.log("here");
-    if (event.target.files.length > 0) {
-      console.log("here2");
-      const file = event.target.files[0];
-      this.importJsonData(file);
-      await this.render();
-    }
   }
 }
 

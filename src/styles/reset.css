@@ -8,7 +8,7 @@
 
 :host {
   display: block;
-  width: 30rem;
+  width: 50rem;
 }
 
 html {
@@ -19,4 +19,5 @@ html {
 body {
   font-size: 1.6rem;
   padding: 1.2rem;
+  width: 100vw;
 }

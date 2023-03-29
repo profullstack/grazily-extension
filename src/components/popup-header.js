@@ -1,10 +1,13 @@
 import BaseElement from "./base.js";
 
-class PopupHeader extends BaseElement {
+export default class PopupHeader extends BaseElement {
   constructor() {
     super();
 
+    this.addEvents = this.addEvents.bind(this);
+    this.removeEvents = this.removeEvents.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.showScreen = this.showScreen.bind(this);
   }
 
   async render(initial = false) {
@@ -14,9 +17,10 @@ class PopupHeader extends BaseElement {
           <button id="menu-button"><img src="assets/hamburger.svg" alt="Menu" /></button>
         </header>
         <nav id="menu" class="hide">
-          <a href="#">Import</a>
-          <a href="#">Export</a>
-          <a href="#">New Profile</a>
+          <a href="#" id="show-profiles">Show Profiles</a>
+          <a href="#" id="create-profile">New Profile</a>
+          <a href="#" id="import-data">Import Data</a>
+          <a href="#" id="export-data">Export Data</a>
         </nav>
       `;
 
@@ -27,13 +31,36 @@ class PopupHeader extends BaseElement {
   addEvents() {
     this.hamburger = this.querySelector("#menu-button");
     this.hamburger.addEventListener("click", this.toggleMenu);
-    this.addEventListener("update", this.render);
+    this.links = this.querySelectorAll("#menu a");
+
+    for (let link of this.links) {
+      link.addEventListener("click", this.showScreen);
+    }
   }
 
   removeEvents(initial = false) {
+    super.removeEvents(initial);
     if (initial) return;
     this.hamburger.removeEventListener("click", this.toggleMenu);
-    this.removeEventListener("update", this.render);
+    this.links = this.querySelectorAll("#menu a");
+
+    for (let link of this.links) {
+      link.removeEventListener("click", this.showScreen);
+    }
+  }
+
+  showScreen(e) {
+    e.preventDefault();
+    const { id } = e.currentTarget;
+    const screens = document.querySelectorAll(".screen");
+
+    screens.forEach((screen) => {
+      if (screen.tagName.toLowerCase() === id) {
+        screen.classList.remove("hide");
+      } else {
+        screen.classList.add("hide");
+      }
+    });
   }
 
   toggleMenu(e) {
@@ -45,5 +72,3 @@ class PopupHeader extends BaseElement {
 }
 
 customElements.define("popup-header", PopupHeader);
-
-export default PopupHeader;

@@ -24,14 +24,14 @@ createContextMenuItem({
 // Child menu items
 createContextMenuItem({
   id: "childMenuItem1",
-  title: "Import",
+  title: "Import Data",
   parentId: "parentMenuItem",
   contexts: ["page"],
 });
 
 createContextMenuItem({
   id: "childMenuItem2",
-  title: "Export",
+  title: "Export Data",
   parentId: "parentMenuItem",
   contexts: ["page"],
 });
