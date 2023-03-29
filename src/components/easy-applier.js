@@ -12,7 +12,7 @@ export default class EasyApplier extends BaseElement {
     this.innerHTML = `
         ${this.renderStyle()}
 
-        <div id="${this.ns}">
+        <div id="${this.NS}">
           <popup-header></popup-header>
           <pre>${JSON.stringify(this.jsonData, null, 2)}</pre>
           ${this.renderScreens()}
@@ -25,7 +25,15 @@ export default class EasyApplier extends BaseElement {
   }
 
   renderStyle() {
-    return `<style id="main-css"></style>`;
+    return `
+    <style>
+    :host, easy-applier {
+      display: block;
+      width: 45rem;
+    }
+    </style>
+    <style id="main-css"></style>
+    `;
   }
 
   renderScreens() {

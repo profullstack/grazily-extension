@@ -61,6 +61,8 @@ export default class PopupHeader extends BaseElement {
         screen.classList.add("hide");
       }
     });
+
+    this.menu.classList.add("hide");
   }
 
   toggleMenu(e) {

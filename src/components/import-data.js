@@ -40,7 +40,7 @@ export default class ImportData extends BaseElement {
 
       fileReader.onload = async () => {
         this.jsonData = JSON.parse(fileReader.result);
-        localStorage.setItem(this.ns, JSON.stringify(this.jsonData));
+        localStorage.setItem(this.NS, JSON.stringify(this.jsonData));
         this.triggerUpdate();
         console.log("Imported JSON data:", this.jsonData);
       };

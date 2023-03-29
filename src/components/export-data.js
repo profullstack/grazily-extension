@@ -31,7 +31,7 @@ export default class ExportData extends BaseElement {
 
   handleExport(e) {
     e.preventDefault();
-    this.exportJsonData(this.ns + "-profile.json");
+    this.exportJsonData(this.NS + "-profile.json");
   }
 
   exportJsonData(filename = "data.json") {
