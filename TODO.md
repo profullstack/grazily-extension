@@ -15,3 +15,6 @@
 
 - screen transitions
 - underlay for menu
+- register account (requires api)
+- signin to account (requires api)
+- password reset for account (requires api)
