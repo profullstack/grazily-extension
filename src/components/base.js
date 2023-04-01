@@ -5,7 +5,7 @@ export default class BaseElement extends HTMLElement {
     this.render = this.render.bind(this);
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
-    this.jsonData = [];
+    this.currentProfile = null;
 
     // this.attachShadow({ mode: "open" });
     this.loadCSS("./styles/main.css");
@@ -72,4 +72,6 @@ export default class BaseElement extends HTMLElement {
     const event = new CustomEvent("update");
     this.dispatchEvent(event);
   }
+
+  navigate(from, to) {}
 }

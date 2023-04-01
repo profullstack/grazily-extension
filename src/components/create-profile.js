@@ -4,6 +4,7 @@ export default class CreateProfile extends BaseElement {
   constructor() {
     super();
 
+    this.currentProfile = null;
     this.addEvents = this.addEvents.bind(this);
     this.removeEvents = this.removeEvents.bind(this);
     this.renderContactFields = this.renderContactFields.bind(this);
@@ -17,9 +18,11 @@ export default class CreateProfile extends BaseElement {
   }
 
   async render(initial = false) {
+    console.log("currerntProfile2: ", this.currentProfile);
     this.innerHTML = `
-        <h1>Add new profile</h1>
+        <h1>Add new profile2 for ${this.currentProfile?.profileName}</h1>
         <form id="info">
+          <input name="id" value="${this.currentProfile?.id}" />
           <div class="field">
             <label for="profileName">Profile Name:</label>
             <input type="text" name="profileName" id="profileName" placeholder="Engineering Manager" />
@@ -134,6 +137,11 @@ export default class CreateProfile extends BaseElement {
     }
   }
 
+  setProfile(profile) {
+    this.currentProfile = profile;
+    this.render(true);
+  }
+
   showSection(index) {
     this.sections[this.currentSection].classList.add("hide");
     this.currentSection = index;
@@ -144,8 +152,8 @@ export default class CreateProfile extends BaseElement {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const obj = {}; //todo fetch existing by ID passed
-    obj.id = obj.id || crypto.randomUUID();
+    const obj = {};
+    obj.id = formData.id || crypto.randomUUID();
 
     for (const [key, value] of formData.entries()) {
       obj[key] = value;
