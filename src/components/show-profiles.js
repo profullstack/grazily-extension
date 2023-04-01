@@ -36,16 +36,25 @@ export default class ShowProfiles extends BaseElement {
     );
 
     console.log("currentProfile: ", currentProfile);
+    e;
 
-    const Component = customElements.get("create-profile");
-    const currPage = document.querySelector("show-profiles");
-    const newPage = document.querySelector("create-profile");
+    this.navigate("show-profiles", "create-profile", (component) => {
+      console.log("here1");
+      component.setProfile(currentProfile);
+      console.log("here2");
+      return Promise.resolve();
+    });
+    // const Component = customElements.get("create-profile");
+    // const currPage = document.querySelector("show-profiles");
+    // const newPage = document.querySelector("create-profile");
+    // const component = new Component();
 
-    const component = new Component();
-    newPage.replaceWith(component);
-    component.setProfile(currentProfile);
-    newPage.classList.remove("hide");
-    currPage.classList.add("hide");
+    // console.log("here3");
+    // newPage.replaceWith(component);
+    // component.setProfile(currentProfile);
+    // newPage.classList.remove("hide");
+    // currPage.classList.add("hide");
+    console.log("here4");
   }
 
   addEvents(initial) {

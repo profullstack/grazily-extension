@@ -1,8 +1,13 @@
+button,
 input:not([type="radio"]):not([type="checkbox"]) {
   border: 1px solid black;
   padding: 0.4rem 0.8rem;
   outline: none;
   width: 100%;
+}
+
+button {
+  width: auto;
 }
 
 label {
@@ -17,4 +22,14 @@ form section footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+button#menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  width: auto;
 }

@@ -5,6 +5,7 @@ export default class BaseElement extends HTMLElement {
     this.render = this.render.bind(this);
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
+    this.navigate = this.navigate.bind(this);
     this.currentProfile = null;
 
     // this.attachShadow({ mode: "open" });
@@ -37,6 +38,22 @@ export default class BaseElement extends HTMLElement {
     } catch (error) {
       console.error("Error loading CSS:", error);
     }
+  }
+
+  async navigate(from, to, cb) {
+    const Component = customElements.get(to);
+    const currPage = document.querySelector(from);
+    const newPage = document.querySelector(to);
+
+    console.log("cb: ", cb);
+    const component = new Component();
+    console.log("one");
+    await cb(component);
+    // component.setProfile(currentProfile);
+    console.log("two");
+    newPage.replaceWith(component);
+    newPage.classList.remove("hide");
+    currPage.classList.add("hide");
   }
 
   addEvents() {
@@ -72,6 +89,4 @@ export default class BaseElement extends HTMLElement {
     const event = new CustomEvent("update");
     this.dispatchEvent(event);
   }
-
-  navigate(from, to) {}
 }
