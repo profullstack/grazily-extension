@@ -51,14 +51,21 @@ export default class PopupHeader extends BaseElement {
 
   showScreen(e) {
     e.preventDefault();
+    console.log("showScreen");
     const { id } = e.currentTarget;
+    console.log(id);
     const screens = document.querySelectorAll(".screen");
+
+    console.log(screens);
 
     screens.forEach((screen) => {
       if (screen.tagName.toLowerCase() === id) {
+        console.log("here foo", id);
+        screen.reset();
         screen.classList.remove("hide");
       } else {
         screen.classList.add("hide");
+        screen.reset();
       }
     });
 

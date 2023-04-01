@@ -4,7 +4,6 @@ export default class CreateProfile extends BaseElement {
   constructor() {
     super();
 
-    this.currentProfile = null;
     this.addEvents = this.addEvents.bind(this);
     this.removeEvents = this.removeEvents.bind(this);
     this.renderContactFields = this.renderContactFields.bind(this);
@@ -20,7 +19,9 @@ export default class CreateProfile extends BaseElement {
   async render(initial = false) {
     console.log("currerntProfile2: ", this.currentProfile);
     this.innerHTML = `
-        <h1>Add new profile2 for ${this.currentProfile?.profileName}</h1>
+        <h1>${this.currentProfile ? "Edit" : "Add new"} profile ${
+      this.currentProfile ? " for " + this.currentProfile.profileName : ""
+    }</h1>
         <form id="info">
           <input name="id" value="${this.currentProfile?.id}" />
           <div class="field">
@@ -146,6 +147,14 @@ export default class CreateProfile extends BaseElement {
     this.sections[this.currentSection].classList.add("hide");
     this.currentSection = index;
     this.sections[this.currentSection].classList.remove("hide");
+  }
+
+  reset() {
+    super.reset();
+    console.log("create-profile rest called!");
+    this.currentProfile = null;
+    this.currentSection = 0;
+    this.render();
   }
 
   saveForm(e) {

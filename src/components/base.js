@@ -6,7 +6,7 @@ export default class BaseElement extends HTMLElement {
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
     this.navigate = this.navigate.bind(this);
-    this.currentProfile = null;
+    this._currentProfile = null;
 
     // this.attachShadow({ mode: "open" });
     this.loadCSS("./styles/main.css");
@@ -16,6 +16,14 @@ export default class BaseElement extends HTMLElement {
       key2: "value2",
       profiles: [],
     };
+  }
+
+  set currentProfile(profile) {
+    this._currentProfile = profile;
+  }
+
+  get currentProfile() {
+    return this._currentProfile;
   }
 
   async connectedCallback() {
@@ -44,13 +52,12 @@ export default class BaseElement extends HTMLElement {
     const Component = customElements.get(to);
     const currPage = document.querySelector(from);
     const newPage = document.querySelector(to);
-
-    console.log("cb: ", cb);
     const component = new Component();
-    console.log("one");
-    await cb(component);
-    // component.setProfile(currentProfile);
-    console.log("two");
+
+    if (cb) {
+      await cb(component);
+    }
+
     newPage.replaceWith(component);
     newPage.classList.remove("hide");
     currPage.classList.add("hide");
@@ -83,6 +90,10 @@ export default class BaseElement extends HTMLElement {
     if (update) {
       this.triggerUpdate();
     }
+  }
+
+  reset() {
+    console.log("base reset called");
   }
 
   async triggerUpdate() {
