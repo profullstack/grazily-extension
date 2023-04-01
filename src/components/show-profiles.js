@@ -8,6 +8,7 @@ export default class ShowProfiles extends BaseElement {
     this.addEvents = this.addEvents.bind(this);
     this.removeEvents = this.removeEvents.bind(this);
     this.editProfile = this.editProfile.bind(this);
+    this.deleteProfile = this.deleteProfile.bind(this);
   }
 
   async render(initial = false) {
@@ -16,7 +17,7 @@ export default class ShowProfiles extends BaseElement {
         <ol>
           ${this.jsonData.profiles
             .map((profile) => {
-              return `<li><a href="#" data-id="${profile.id}" class="edit">${profile.id}: ${profile.profileName}</a></li>`;
+              return `<li>${profile.id}: ${profile.profileName} <a href="#" data-id="${profile.id}" class="edit">edit</a> <a href="#" data-id="${profile.id}" class="delete">delete</a></li>`;
             })
             .join("")}
         </ol>
@@ -45,12 +46,28 @@ export default class ShowProfiles extends BaseElement {
     });
   }
 
+  deleteProfile(e) {
+    e.preventDefault();
+    const { id } = e.currentTarget.dataset;
+
+    this.jsonData.profiles = this.jsonData.profiles.filter(
+      (profile) => profile.id === id
+    );
+
+    this.render();
+  }
+
   addEvents(initial) {
     super.addEvents();
     this.editLinks = this.querySelectorAll("a.edit");
+    this.deleteLinks = this.querySelectorAll("a.delete");
 
     for (let link of this.editLinks) {
       link.addEventListener("click", this.editProfile);
+    }
+
+    for (let link of this.deleteLinks) {
+      link.addEventListener("click", this.deleteProfile);
     }
   }
 
@@ -60,6 +77,10 @@ export default class ShowProfiles extends BaseElement {
 
     for (let link of this.editLinks) {
       link.removeEventListener("click", this.editProfile);
+    }
+
+    for (let link of this.deleteLinks) {
+      link.removeEventListener("click", this.deleteProfile);
     }
   }
 }
