@@ -197,12 +197,13 @@ export default class CreateProfile extends BaseElement {
     this.updateData(null, null, "profiles", obj, true);
     console.log("obj: ", obj);
     this.currentProfile = obj;
-    this.render();
   }
 
   handleUpdate(e) {
     const data = e.detail;
     console.log("update data:", data);
+    this.refreshData();
+    this.render();
   }
 
   addEvents(initial) {

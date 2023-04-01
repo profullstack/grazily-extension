@@ -9,6 +9,7 @@ export default class ShowProfiles extends BaseElement {
     this.removeEvents = this.removeEvents.bind(this);
     this.editProfile = this.editProfile.bind(this);
     this.deleteProfile = this.deleteProfile.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   async render(initial = false) {
@@ -54,6 +55,13 @@ export default class ShowProfiles extends BaseElement {
       (profile) => profile.id === id
     );
 
+    this.updateData(null, null, "profiles", this.jsonData.profiles, true);
+  }
+
+  handleUpdate(e) {
+    const data = e.detail;
+    console.log("update data:", data);
+    this.refreshData();
     this.render();
   }
 
@@ -61,6 +69,8 @@ export default class ShowProfiles extends BaseElement {
     super.addEvents();
     this.editLinks = this.querySelectorAll("a.edit");
     this.deleteLinks = this.querySelectorAll("a.delete");
+
+    this.addEventListener("update", this.handleUpdate);
 
     for (let link of this.editLinks) {
       link.addEventListener("click", this.editProfile);
@@ -74,6 +84,8 @@ export default class ShowProfiles extends BaseElement {
   removeEvents(initial = false) {
     super.removeEvents(initial);
     if (initial) return;
+
+    this.removeEventListener("update", this.handleUpdate);
 
     for (let link of this.editLinks) {
       link.removeEventListener("click", this.editProfile);

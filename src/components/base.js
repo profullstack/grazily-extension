@@ -7,16 +7,12 @@ export default class BaseElement extends HTMLElement {
     this.updateData = this.updateData.bind(this);
     this.triggerUpdate = this.triggerUpdate.bind(this);
     this.navigate = this.navigate.bind(this);
+    this.refreshData = this.refreshData.bind(this);
     this._currentProfile = null;
 
     // this.attachShadow({ mode: "open" });
     this.loadCSS("./styles/main.css");
-
-    this.jsonData = JSON.parse(localStorage.getItem(this.NS)) || {
-      key1: "value1",
-      key2: "value2",
-      profiles: [],
-    };
+    this.refreshData();
   }
 
   set currentProfile(profile) {
@@ -28,6 +24,7 @@ export default class BaseElement extends HTMLElement {
   }
 
   async connectedCallback() {
+    this.refreshData();
     await this.render(true);
   }
 
@@ -104,6 +101,17 @@ export default class BaseElement extends HTMLElement {
     if (update) {
       this.triggerUpdate();
     }
+  }
+
+  refreshData() {
+    this.jsonData = JSON.parse(localStorage.getItem(this.NS)) || {
+      key1: "value1",
+      key2: "value2",
+      profiles: [],
+    };
+    this.currentProfile = this.jsonData?.profiles.find(
+      (profile) => profile.id === this.currentProfile?.id
+    );
   }
 
   reset() {
