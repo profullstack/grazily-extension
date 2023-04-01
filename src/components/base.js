@@ -5,6 +5,7 @@ export default class BaseElement extends HTMLElement {
     this.render = this.render.bind(this);
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
+    this.triggerUpdate = this.triggerUpdate.bind(this);
     this.navigate = this.navigate.bind(this);
     this._currentProfile = null;
 
@@ -77,7 +78,20 @@ export default class BaseElement extends HTMLElement {
 
     if (dataKey) {
       if (Array.isArray(this.jsonData[dataKey])) {
-        this.jsonData[dataKey].push(obj);
+        if (obj.id) {
+          const idx = this.jsonData[dataKey].findIndex((d) => d.id === obj.id);
+          console.log("existing:", idx);
+
+          if (idx > -1) {
+            this.jsonData[dataKey][idx] = {
+              ...this.jsonData[dataKey][idx],
+              ...obj,
+            };
+          }
+        } else {
+          obj.id = crypto.randomUUID();
+          this.jsonData[dataKey].push(obj);
+        }
       } else {
         this.jsonData[dataKey][key] = value;
       }
@@ -97,7 +111,7 @@ export default class BaseElement extends HTMLElement {
   }
 
   async triggerUpdate() {
-    const event = new CustomEvent("update");
+    const event = new CustomEvent("update", { detail: this.jsonData });
     this.dispatchEvent(event);
   }
 }

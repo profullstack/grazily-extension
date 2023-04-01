@@ -13,6 +13,7 @@ export default class CreateProfile extends BaseElement {
     this.prevSection = this.prevSection.bind(this);
     this.showSection = this.showSection.bind(this);
     this.saveForm = this.saveForm.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
     this.currentSection = 0;
   }
 
@@ -21,9 +22,10 @@ export default class CreateProfile extends BaseElement {
     this.innerHTML = `
         <h1>${this.currentProfile ? "Edit" : "Add new"} profile ${
       this.currentProfile ? " for " + this.currentProfile.profileName : ""
-    }</h1>
+    }
+    </h1>
         <form id="info">
-          <input name="id" value="${this.currentProfile?.id}" />
+          <input name="id" />
           <div class="field">
             <label for="profileName">Profile Name:</label>
             <input type="text" name="profileName" id="profileName" placeholder="Engineering Manager" />
@@ -32,6 +34,10 @@ export default class CreateProfile extends BaseElement {
           ${this.renderWorkExperienceFields()}
         </form>
     `;
+
+    if (this.currentProfile) {
+      this.prefillForm();
+    }
 
     this.removeEvents(initial);
     this.addEvents();
@@ -143,6 +149,25 @@ export default class CreateProfile extends BaseElement {
     this.render(true);
   }
 
+  prefillForm() {
+    this.form = this.querySelector("form");
+    const formData = new FormData(this.form);
+
+    for (const key in this.currentProfile) {
+      if (this.currentProfile.hasOwnProperty(key)) {
+        formData.set(key, this.currentProfile[key]);
+      }
+    }
+
+    for (const [key, value] of formData) {
+      const input = this.form.querySelector(`[name="${key}"]`);
+
+      if (input) {
+        input.value = value;
+      }
+    }
+  }
+
   showSection(index) {
     this.sections[this.currentSection].classList.add("hide");
     this.currentSection = index;
@@ -162,13 +187,22 @@ export default class CreateProfile extends BaseElement {
 
     const formData = new FormData(e.target);
     const obj = {};
-    obj.id = formData.id || crypto.randomUUID();
+    obj.id = formData.id || null;
 
     for (const [key, value] of formData.entries()) {
       obj[key] = value;
     }
 
-    this.updateData(null, null, "profiles", obj, false);
+    // this.createData(null, null, "profiles", obj, false);
+    this.updateData(null, null, "profiles", obj, true);
+    console.log("obj: ", obj);
+    this.currentProfile = obj;
+    this.render();
+  }
+
+  handleUpdate(e) {
+    const data = e.detail;
+    console.log("update data:", data);
   }
 
   addEvents(initial) {
@@ -177,6 +211,7 @@ export default class CreateProfile extends BaseElement {
     this.prevButtons = this.querySelectorAll("form section .prev");
     this.nextButtons = this.querySelectorAll("form section .next");
     this.form = this.querySelector("form#info");
+    this.addEventListener("update", this.handleUpdate);
 
     this.form.addEventListener("submit", this.saveForm);
 
@@ -198,7 +233,7 @@ export default class CreateProfile extends BaseElement {
     if (initial) return;
 
     this.form.removeEventListener("submit", this.saveForm);
-
+    this.removeEventListener("update", this.handleUpdate);
     for (let btn of this.prevButtons) {
       btn.removeEventListener("click", this.prevSection);
     }
