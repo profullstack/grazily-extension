@@ -5,6 +5,7 @@ export default class BaseElement extends HTMLElement {
     this.render = this.render.bind(this);
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
+    this.jsonData = [];
 
     // this.attachShadow({ mode: "open" });
     this.loadCSS("./styles/main.css");
@@ -12,6 +13,7 @@ export default class BaseElement extends HTMLElement {
     this.jsonData = JSON.parse(localStorage.getItem(this.NS)) || {
       key1: "value1",
       key2: "value2",
+      profiles: [],
     };
   }
 
@@ -37,7 +39,6 @@ export default class BaseElement extends HTMLElement {
     }
   }
 
-
   addEvents() {
     this.addEventListener("update", this.render);
   }
@@ -47,11 +48,24 @@ export default class BaseElement extends HTMLElement {
     this.removeEventListener("update", this.render);
   }
 
-  updateData(key, value) {
-    console.log(key, value);
-    this.jsonData[key] = value;
+  updateData(key, value, dataKey = null, obj = null, update = true) {
+    console.log(key, value, dataKey, obj);
+
+    if (dataKey) {
+      if (Array.isArray(this.jsonData[dataKey])) {
+        this.jsonData[dataKey].push(obj);
+      } else {
+        this.jsonData[dataKey][key] = value;
+      }
+    } else {
+      this.jsonData[key] = value;
+    }
+
     localStorage.setItem(this.NS, JSON.stringify(this.jsonData));
-    this.triggerUpdate();
+
+    if (update) {
+      this.triggerUpdate();
+    }
   }
 
   async triggerUpdate() {

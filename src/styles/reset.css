@@ -6,8 +6,6 @@
   padding: 0;
 }
 
-
-
 html {
   display: block;
   font-family: sans-serif;
@@ -21,4 +19,8 @@ body {
 
 easy-applier {
   width: 45rem;
+}
+
+ol {
+  padding-left: 4rem;
 }

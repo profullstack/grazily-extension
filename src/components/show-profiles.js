@@ -11,6 +11,11 @@ export default class ShowProfiles extends BaseElement {
   async render(initial = false) {
     this.innerHTML = `
         <h1>Your profiles</h1>
+        <ol>
+          ${this.jsonData.profiles
+            .map((profile) => `<li>${profile.id}: ${profile.profileName}</li>`)
+            .join("")}
+        </ol>
     `;
 
     this.removeEvents(initial);
