@@ -22,7 +22,7 @@ export default class CreateProfile extends BaseElement {
     this.innerHTML = `
         <h1>Edit profile</h1>
         <form id="info">
-          <input name="id" />
+          <input name="id" type="hidden" />
           <div class="field">
             <label for="profileName">Profile Name:</label>
             <input type="text" name="profileName" id="profileName" placeholder="Engineering Manager" />
