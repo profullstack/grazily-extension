@@ -17,8 +17,7 @@ export default class PopupHeader extends BaseElement {
           <button id="menu-button"><img src="assets/hamburger.svg" alt="Menu" /></button>
         </header>
         <nav id="menu" class="hide">
-          <a href="#" id="show-profiles">Show Profiles</a>
-          <a href="#" id="create-profile">New Profile</a>
+          <a href="#" id="create-profile">Edit Profile</a>
           <a href="#" id="import-data">Import Data</a>
           <a href="#" id="export-data">Export Data</a>
         </nav>
@@ -61,8 +60,17 @@ export default class PopupHeader extends BaseElement {
     screens.forEach((screen) => {
       if (screen.tagName.toLowerCase() === id) {
         console.log("here foo", id);
-        screen.reset();
-        screen.classList.remove("hide");
+        if (id === "create-profile") {
+          this.navigate("show-profiles", "create-profile", (component) => {
+            component.setProfile(this.currentProfile);
+            component.classList.add("screen");
+
+            return Promise.resolve();
+          });
+        } else {
+          screen.reset();
+          screen.classList.remove("hide");
+        }
       } else {
         screen.classList.add("hide");
         screen.reset();

@@ -20,10 +20,7 @@ export default class CreateProfile extends BaseElement {
   async render(initial = false) {
     console.log("currerntProfile2: ", this.currentProfile);
     this.innerHTML = `
-        <h1>${this.currentProfile ? "Edit" : "Add new"} profile ${
-      this.currentProfile ? " for " + this.currentProfile.profileName : ""
-    }
-    </h1>
+        <h1>Edit profile</h1>
         <form id="info">
           <input name="id" />
           <div class="field">
@@ -194,7 +191,7 @@ export default class CreateProfile extends BaseElement {
     }
 
     // this.createData(null, null, "profiles", obj, false);
-    this.updateData(null, null, "profiles", obj, true);
+    this.updateData(null, null, "profile", obj, true);
     console.log("obj: ", obj);
     this.currentProfile = obj;
   }

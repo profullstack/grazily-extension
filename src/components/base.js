@@ -89,6 +89,8 @@ export default class BaseElement extends HTMLElement {
           obj.id = crypto.randomUUID();
           this.jsonData[dataKey].push(obj);
         }
+      } else if (!key && obj) {
+        this.jsonData[dataKey] = obj;
       } else {
         this.jsonData[dataKey][key] = value;
       }
@@ -108,10 +110,13 @@ export default class BaseElement extends HTMLElement {
       key1: "value1",
       key2: "value2",
       profiles: [],
+      profile: {},
     };
-    this.currentProfile = this.jsonData?.profiles.find(
-      (profile) => profile.id === this.currentProfile?.id
-    );
+
+    this.currentProfile = this.jsonData.profile;
+    // this.currentProfile = this.jsonData?.profiles.find(
+    //   (profile) => profile.id === this.currentProfile?.id
+    // );
   }
 
   reset() {
