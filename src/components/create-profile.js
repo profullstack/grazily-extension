@@ -13,7 +13,16 @@ export default class CreateProfile extends BaseElement {
     this.prevSection = this.prevSection.bind(this);
     this.showSection = this.showSection.bind(this);
     this.saveForm = this.saveForm.bind(this);
+    this.prefillForm = this.prefillForm.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.addWorkExperience = this.addWorkExperience.bind(this);
+    this.renderWorkExperience = this.renderWorkExperience.bind(this);
+    this.renderEducationFields = this.renderEducationFields.bind(this);
+    this.renderEducationExperience = this.renderEducationExperience.bind(this);
+    this.addEducationExperience = this.addEducationExperience.bind(this);
+    this.populateWorkExperienceFields =
+      this.populateWorkExperienceFields.bind(this);
+    this.populateEducationFields = this.populateEducationFields.bind(this);
     this.currentSection = 0;
   }
 
@@ -29,6 +38,7 @@ export default class CreateProfile extends BaseElement {
           </div>
           ${this.renderContactFields()}
           ${this.renderWorkExperienceFields()}
+          ${this.renderEducationFields()}
         </form>
     `;
 
@@ -103,14 +113,7 @@ export default class CreateProfile extends BaseElement {
   renderWorkExperienceFields() {
     return `
       <section id="experience" class="hide">
-        <div class="field">
-          <label for="company">Company:</label>
-          <input type="text" name="company" id="company" />
-        </div>
-        <div class="field">
-          <label for="companyWebsite">Company Website:</label>
-          <input type="text" name="companyWebsite" id="companyWebsite" />
-        </div>
+        ${this.renderWorkExperience()}
         <footer>
           <div>
             <button class="save">Save</button>
@@ -122,6 +125,62 @@ export default class CreateProfile extends BaseElement {
           </div>
         </footer>
       </section>
+    `;
+  }
+
+  renderEducationFields() {
+    return `
+      <section id="education" class="hide">
+        ${this.renderEducationExperience()}
+        <footer>
+          <div>
+            <button class="save">Save</button>
+            <button class="add" type="button">Add another</button>
+          </div>
+          <div>
+            <button class="prev" type="button">Previous</button>
+            <button class="next" type="button">Next</button>
+          </div>
+        </footer>
+      </section>
+    `;
+  }
+
+  renderWorkExperience() {
+    return `
+        <div class="experience">
+          <div class="field">
+            <label for="company">Company:</label>
+            <input type="text" name="company" id="company" />
+          </div>
+          <div class="field">
+            <label for="companyWebsite">Company Website:</label>
+            <input type="text" name="companyWebsite" id="companyWebsite" />
+          </div>
+        </div>
+    `;
+  }
+
+  renderEducationExperience() {
+    return `
+        <div class="education">
+          <div class="field">
+            <label for="school">School or University:</label>
+            <input type="text" name="school" id="school" />
+          </div>
+          <div class="field">
+            <label for="schoolCountry">Country of School:</label>
+            <input type="text" name="schoolCountry" id="schoolCountry" />
+          </div>
+          <div class="field">
+            <label for="areaOfStudy">Area of Study:</label>
+            <input type="text" name="areaOfStudy" id="areaOfStudy" />
+          </div>
+          <div class="field">
+            <label for="degree">Degree, Diploma or Certificate Earned:</label>
+            <input type="text" name="degree" id="degree" />
+          </div>
+        </div>
     `;
   }
 
@@ -146,17 +205,83 @@ export default class CreateProfile extends BaseElement {
     this.render(true);
   }
 
+  populateWorkExperienceFields(workElement, work) {
+    console.log("work: ", workElement, work);
+    workElement.querySelector("input#company").value = work.company;
+    workElement.querySelector("input#companyWebsite").value =
+      work.companyWebsite;
+  }
+
+  populateEducationFields(eduElement, edu) {
+    console.log("edu: ", eduElement, edu);
+    eduElement.querySelector("input#school").value = edu.school;
+    eduElement.querySelector("input#schoolCountry").value = edu.schoolCountry;
+    eduElement.querySelector("input#areaOfStudy").value = edu.areaOfStudy;
+    eduElement.querySelector("input#degree").value = edu.degree;
+  }
+
   prefillForm() {
     this.form = this.querySelector("form");
+    const ignore = [
+      ...this.querySelectorAll(".experience input, .education input"),
+    ].map((el) => el.name);
+
     const formData = new FormData(this.form);
 
+    // populate work experience fields
+    this.currentProfile.work?.forEach((work, idx) => {
+      let workElement;
+
+      if (idx === 0) {
+        workElement = this.querySelector("#experience .experience");
+      } else {
+        const fields = this.renderWorkExperience();
+        this.querySelector(
+          "#experience .experience:last-of-type"
+        ).insertAdjacentHTML("afterend", fields);
+        workElement = this.querySelector(
+          "#experience .experience:last-of-type"
+        );
+      }
+
+      this.populateWorkExperienceFields(workElement, work);
+    });
+
+    this.currentProfile.education?.forEach((edu, idx) => {
+      let eduElement;
+
+      console.log(idx);
+      if (idx === 0) {
+        eduElement = this.querySelector("#education .education");
+      } else {
+        const fields = this.renderEducationExperience();
+        this.querySelector(
+          "#education .education:last-of-type"
+        ).insertAdjacentHTML("afterend", fields);
+        eduElement = this.querySelector("#education .education:last-of-type");
+      }
+
+      this.populateEducationFields(eduElement, edu);
+    });
+
+    // prefill flat form fields
     for (const key in this.currentProfile) {
-      if (this.currentProfile.hasOwnProperty(key)) {
+      console.log("FOOK EY: ", key);
+      if (
+        this.currentProfile.hasOwnProperty(key) &&
+        key !== "work" &&
+        key !== "education"
+      ) {
+        console.log("key1: ", key, this.currentProfile[key]);
         formData.set(key, this.currentProfile[key]);
       }
     }
 
     for (const [key, value] of formData) {
+      if (ignore.indexOf(key) > -1) {
+        continue;
+      }
+      console.log("key2: ", key, value);
       const input = this.form.querySelector(`[name="${key}"]`);
 
       if (input) {
@@ -182,13 +307,54 @@ export default class CreateProfile extends BaseElement {
   saveForm(e) {
     e.preventDefault();
 
+    const ignore = [
+      ...e.target.querySelectorAll(".experience input, .education input"),
+    ].map((el) => el.name);
+
     const formData = new FormData(e.target);
+    const work = [];
+    const education = [];
     const obj = {};
+
     obj.id = formData.id || null;
 
     for (const [key, value] of formData.entries()) {
+      if (ignore.indexOf(key) > -1) {
+        continue;
+      }
+
       obj[key] = value;
     }
+
+    const workExperiences = this.querySelectorAll(".experience");
+    const educationExperiences = this.querySelectorAll(".education");
+
+    for (let el of workExperiences) {
+      const company = el.querySelector("input#company").value;
+      const companyWebsite = el.querySelector("input#companyWebsite").value;
+
+      work.push({
+        company,
+        companyWebsite,
+      });
+    }
+
+    for (let el of educationExperiences) {
+      const school = el.querySelector("input#school").value;
+      const schoolCountry = el.querySelector("input#schoolCountry").value;
+      const areaOfStudy = el.querySelector("input#areaOfStudy").value;
+      const degree = el.querySelector("input#degree").value;
+
+      education.push({
+        school,
+        schoolCountry,
+        areaOfStudy,
+        degree,
+      });
+    }
+
+    obj.work = work;
+    obj.education = education;
 
     // this.createData(null, null, "profiles", obj, false);
     this.updateData(null, null, "profile", obj, true);
@@ -203,15 +369,42 @@ export default class CreateProfile extends BaseElement {
     this.render();
   }
 
+  addWorkExperience(e) {
+    e.preventDefault();
+    const fields = this.renderWorkExperience();
+
+    this.querySelector(
+      "#experience .experience:last-of-type"
+    ).insertAdjacentHTML("afterend", fields);
+  }
+
+  addEducationExperience(e) {
+    e.preventDefault();
+    const fields = this.renderEducationExperience();
+
+    this.querySelector("#education .education:last-of-type").insertAdjacentHTML(
+      "afterend",
+      fields
+    );
+  }
+
   addEvents(initial) {
     super.addEvents();
     this.sections = this.querySelectorAll("form section");
     this.prevButtons = this.querySelectorAll("form section .prev");
     this.nextButtons = this.querySelectorAll("form section .next");
+    this.addExperienceButton = this.querySelector("#experience button.add");
+    this.addEducationButton = this.querySelector("#education button.add");
+
     this.form = this.querySelector("form#info");
     this.addEventListener("update", this.handleUpdate);
 
     this.form.addEventListener("submit", this.saveForm);
+    this.addExperienceButton.addEventListener("click", this.addWorkExperience);
+    this.addEducationButton.addEventListener(
+      "click",
+      this.addEducationExperience
+    );
 
     for (let btn of this.prevButtons) {
       if (btn) {
@@ -231,7 +424,16 @@ export default class CreateProfile extends BaseElement {
     if (initial) return;
 
     this.form.removeEventListener("submit", this.saveForm);
+    this.addExperienceButton.removeEventListener(
+      "click",
+      this.addWorkExperience
+    );
+    this.addEducationButton.removeEventListener(
+      "click",
+      this.addEducationExperience
+    );
     this.removeEventListener("update", this.handleUpdate);
+
     for (let btn of this.prevButtons) {
       btn.removeEventListener("click", this.prevSection);
     }

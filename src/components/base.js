@@ -109,7 +109,7 @@ export default class BaseElement extends HTMLElement {
     this.jsonData = JSON.parse(localStorage.getItem(this.NS)) || {
       key1: "value1",
       key2: "value2",
-      profiles: [],
+      profiles: [], // unused
       profile: {},
     };
 
