@@ -9,6 +9,7 @@ export default class BaseElement extends HTMLElement {
     this.navigate = this.navigate.bind(this);
     this.refreshData = this.refreshData.bind(this);
     this._currentProfile = null;
+    this.extapi = typeof browser !== "undefined" ? browser : chrome;
 
     // this.attachShadow({ mode: "open" });
     this.loadCSS("./styles/main.css");
@@ -44,6 +45,28 @@ export default class BaseElement extends HTMLElement {
     } catch (error) {
       console.error("Error loading CSS:", error);
     }
+  }
+
+  async getTabUrl() {
+    if (typeof browser !== "undefined" && browser.tabs) {
+      // Firefox
+      return browser.tabs
+        .query({ active: true, currentWindow: true })
+        .then((tabs) => tabs[0].url);
+    } else if (typeof chrome !== "undefined" && chrome.tabs) {
+      // Chrome
+      return new Promise((resolve) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          resolve(tabs[0].url);
+        });
+      });
+    } else {
+      console.error("Cannot get tab URL - browser not supported");
+    }
+  }
+
+  async getHostname() {
+    return new URL(await this.getTabUrl()).hostname;
   }
 
   async navigate(from, to, cb) {

@@ -1,16 +1,18 @@
 console.log("Content script loaded!");
 const NS = "easyapplier";
-const b = typeof browser === "undefined" ? chrome : browser;
+const extapi = typeof browser === "undefined" ? chrome : browser;
 
-b.runtime.onMessage.addListener((data) => {
+extapi.runtime.onMessage.addListener(async (data) => {
   console.log("data2", data);
-  const { type } = data;
+  const { type, hostname } = data;
   console.log("type:", type);
 
   if (type === "importJSON") {
     handleImport();
   } else if (type === "exportJSON") {
     handleExport();
+  } else if (type === "apply") {
+    await handleApplication(data, hostname);
   }
 });
 
@@ -39,11 +41,74 @@ function handleChange(e) {
 async function handleLoadJSON(e) {
   const data = JSON.parse(e.target.data);
   console.log("import data:", data);
-  await b.storage.local.set(data[NS]);
+  await extapi.storage.local.set(data[NS]);
+}
+
+async function handleApplication(data, hostname) {
+  const parts = hostname.split(".");
+  const { populate } = easyapplier;
+  const profile = data.data;
+  let site;
+
+  for (const part of parts) {
+    if (populate.hasOwnProperty(part)) {
+      console.log("Match found:", part, populate[part]);
+      site = populate[part];
+      break;
+    }
+  }
+
+  console.log("found site: ", site);
+
+  await populateSite(profile, site);
+}
+
+async function populateSite(profile, site) {
+  for (let key in site) {
+    if (key === "actions") continue;
+    console.log(key, site[key], profile[key], profile);
+    const { attr, val } = site[key];
+
+    // populate the form
+    const el = document.querySelector(`[${attr}=${val}]`);
+    el.value = profile[key];
+
+    // post process form fields (ie: focus the form field)
+    if (site.actions?.set) {
+      for (let ev of site.actions.set) {
+        if (ev === "keypress") {
+          const keyEvent = new KeyboardEvent("keypress", {
+            key: "a",
+            code: "KeyA",
+            charCode: 97,
+            keyCode: 65,
+            which: 65,
+            shiftKey: false,
+            ctrlKey: false,
+            altKey: false,
+            metaKey: false,
+            bubbles: true,
+            cancelable: true,
+          });
+
+          const clickEvent = new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+          });
+
+          el.dispatchEvent(clickEvent);
+          el.dispatchEvent(keyEvent);
+        } else {
+          el[ev]();
+        }
+      }
+    }
+  }
 }
 
 async function handleExport() {
-  const res = await b.storage.local.get(NS);
+  const res = await extapi.storage.local.get(NS);
   console.log("res: ", res);
   const type = "application/json;charset=utf-8";
   const data = JSON.stringify(res[NS] === undefined ? {} : res[NS]);
@@ -65,7 +130,7 @@ async function handleExport() {
 
 async function sendMessage(data, opts = {}) {
   console.log("opts2:", opts);
-  b.runtime.sendMessage({ type: data, ...opts });
+  extapi.runtime.sendMessage({ type: data, ...opts });
 }
 
 // function getCurrentTab() {

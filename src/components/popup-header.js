@@ -18,6 +18,7 @@ export default class PopupHeader extends BaseElement {
         </header>
         <nav id="menu" class="hide">
           <a href="#" id="create-profile">Edit Profile</a>
+          <a href="#" id="job-sites">Job Sites</a>
           <a href="#" id="import-data">Import Data</a>
           <a href="#" id="export-data">Export Data</a>
         </nav>

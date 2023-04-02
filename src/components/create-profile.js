@@ -63,12 +63,20 @@ export default class CreateProfile extends BaseElement {
           <input type="text" name="firstName" id="firstName" />
         </div>
         <div class="field">
+          <label for="middleName">Middle Name:</label>
+          <input type="text" name="middleName" id="middleName" />
+        </div>
+        <div class="field">
           <label for="lastName">Last Name:</label>
           <input type="text" name="lastName" id="lastName" />
         </div>
         <div class="field">
           <label for="phone">Phone Number:</label>
           <input type="phone" name="phone" id="phone" />
+        </div>
+        <div class="field">
+          <label for="phone">Phone Extension:</label>
+          <input type="phone" name="phoneExt" id="phoneExt" />
         </div>
         <div class="field">
           <label for="timezone">Timezone:</label>
