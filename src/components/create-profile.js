@@ -206,14 +206,12 @@ export default class CreateProfile extends BaseElement {
   }
 
   populateWorkExperienceFields(workElement, work) {
-    console.log("work: ", workElement, work);
     workElement.querySelector("input#company").value = work.company;
     workElement.querySelector("input#companyWebsite").value =
       work.companyWebsite;
   }
 
   populateEducationFields(eduElement, edu) {
-    console.log("edu: ", eduElement, edu);
     eduElement.querySelector("input#school").value = edu.school;
     eduElement.querySelector("input#schoolCountry").value = edu.schoolCountry;
     eduElement.querySelector("input#areaOfStudy").value = edu.areaOfStudy;
@@ -266,13 +264,11 @@ export default class CreateProfile extends BaseElement {
 
     // prefill flat form fields
     for (const key in this.currentProfile) {
-      console.log("FOOK EY: ", key);
       if (
         this.currentProfile.hasOwnProperty(key) &&
         key !== "work" &&
         key !== "education"
       ) {
-        console.log("key1: ", key, this.currentProfile[key]);
         formData.set(key, this.currentProfile[key]);
       }
     }
@@ -281,7 +277,6 @@ export default class CreateProfile extends BaseElement {
       if (ignore.indexOf(key) > -1) {
         continue;
       }
-      console.log("key2: ", key, value);
       const input = this.form.querySelector(`[name="${key}"]`);
 
       if (input) {
