@@ -13,7 +13,7 @@ const createContextMenuItem = (menuItem) => {
 // Parent menu item
 createContextMenuItem({
   id: "parentMenuItem",
-  title: "Easy Applier",
+  title: "Grazily Applier",
   contexts: ["page"],
   // icons: {
   //   16: "assets/icon-16.png",

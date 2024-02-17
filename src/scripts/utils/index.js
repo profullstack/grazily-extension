@@ -1,4 +1,4 @@
-const NS = "easyapplier";
+const NS = "grazilyapplier";
 const importJsonData = (file) => {
   try {
     const fileReader = new FileReader();

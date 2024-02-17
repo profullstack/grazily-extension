@@ -13,7 +13,7 @@ export default class PopupHeader extends BaseElement {
   async render(initial = false) {
     this.innerHTML = `
         <header class="main">
-          <a href="https://easyapplier.com" id="logo" target="_blank"><img src="assets/logo.svg" alt="logo" /></a>
+          <a href="https://grazily.com" id="logo" target="_blank"><img src="assets/logo.svg" alt="logo" /></a>
           <button id="menu-button"><img src="assets/hamburger.svg" alt="Menu" /></button>
         </header>
         <nav id="menu" class="hide">

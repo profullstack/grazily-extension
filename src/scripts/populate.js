@@ -1,6 +1,6 @@
-let easyapplier = window.easyapplier || {};
+let grazilyapplier = window.grazilyapplier || {};
 
-easyapplier.populate = {
+grazilyapplier.populate = {
   workday: {
     firstName: {
       attr: "data-automation-id",

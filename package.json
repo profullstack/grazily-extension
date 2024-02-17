@@ -1,5 +1,5 @@
 {
-  "name": "easyapplier-extension",
+  "name": "grazily-extension",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,13 +7,15 @@
   "scripts": {
     "build:firefox": "rm -f manifest.json && ln -s manifest.firefox.json manifest.json && vite build && zip -r ./firefox-extension.zip ./dist/*",
     "build:chrome": "rm -f manifest.json && ln -s manifest.chrome.json manifest.json && vite build && zip -r ./chrome-extension.zip ./dist/*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx web-ext lint"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "prettier": "^2.8.7",
     "vite": "^4.2.1",
-    "vite-plugin-static-copy": "^0.13.1"
+    "vite-plugin-static-copy": "^0.13.1",
+    "web-ext": "^7.11.0"
   }
 }

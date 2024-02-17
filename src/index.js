@@ -1,4 +1,4 @@
-import "./components/easy-applier.js";
+import "./components/grazily-applier.js";
 import "./components/popup-header.js";
 import "./components/create-profile.js";
 import "./components/job-sites.js";

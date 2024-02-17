@@ -1,5 +1,5 @@
 console.log("Content script loaded!");
-const NS = "easyapplier";
+const NS = "grazilyapplier";
 const extapi = typeof browser === "undefined" ? chrome : browser;
 
 extapi.runtime.onMessage.addListener(async (data) => {
@@ -46,7 +46,7 @@ async function handleLoadJSON(e) {
 
 async function handleApplication(data, hostname) {
   const parts = hostname.split(".");
-  const { populate } = easyapplier;
+  const { populate } = grazilyapplier;
   const profile = data.data;
   let site;
 

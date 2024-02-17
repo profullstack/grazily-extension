@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Easy Applier",
+  "name": "Grazily Applier",
   "version": "1.0",
   "permissions": [
     "contextMenus",

@@ -1,7 +1,7 @@
 export default class BaseElement extends HTMLElement {
   constructor() {
     super();
-    this.NS = "easyapplier";
+    this.NS = "grazilyapplier";
     this.render = this.render.bind(this);
     this.loadCss = this.loadCSS.bind(this);
     this.updateData = this.updateData.bind(this);
