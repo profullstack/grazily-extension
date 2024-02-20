@@ -301,7 +301,7 @@ export default class CreateProfile extends BaseElement {
 
   reset() {
     super.reset();
-    console.log("create-profile rest called!");
+    console.log("create-profile reset called!");
     this.currentProfile = null;
     this.currentSection = 0;
     this.render();

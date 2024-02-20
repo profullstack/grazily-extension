@@ -45,12 +45,15 @@ async function handleLoadJSON(e) {
 }
 
 async function handleApplication(data, hostname) {
+  console.log("data:", data, "hostname:", hostname);
   const parts = hostname.split(".");
+  console.log("parts:", parts);
   const { populate } = grazilyapplier;
   const profile = data.data;
   let site;
 
   for (const part of parts) {
+    console.log("part: ", part);
     if (populate.hasOwnProperty(part)) {
       console.log("Match found:", part, populate[part]);
       site = populate[part];
@@ -67,10 +70,10 @@ async function populateSite(profile, site) {
   for (let key in site) {
     if (key === "actions") continue;
     console.log(key, site[key], profile[key], profile);
-    const { attr, val } = site[key];
+    const { selector, val } = site[key];
 
     // populate the form
-    const el = document.querySelector(`[${attr}=${val}]`);
+    const el = document.querySelector(selector);
     el.value = profile[key];
 
     // post process form fields (ie: focus the form field)
