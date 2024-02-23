@@ -93,7 +93,7 @@ grazilyapplier.populate = {
   },
   workatastartup: {
     cover: {
-      selector: "#headlessui-dialog-panel-4 textarea",
+      selector: "textarea",
       val: "cover",
     },
   },
