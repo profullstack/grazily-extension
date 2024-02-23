@@ -1,3 +1,5 @@
+import { _get } from './get.js';
+
 const NS = "grazilyapplier";
 const importJsonData = (file) => {
   try {
@@ -28,4 +30,4 @@ const exportJsonData = (filename = "data.json") => {
   }, 0);
 };
 
-export { NS, importJsonData, exportJsonData };
+export { NS, importJsonData, exportJsonData, _get };

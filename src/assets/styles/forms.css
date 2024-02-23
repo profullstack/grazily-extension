@@ -69,6 +69,7 @@ textarea {
 
 textarea {
 	height: 30rem;
+	width: fit-content;
 }
 
 form input[type]:focus,
@@ -106,9 +107,7 @@ button {
 button:hover {
 	box-shadow: 0 6px 0 transparent;
 }
-textarea {
-	width: 100%;
-}
+
 .group .button-tag {
 	padding: 0 8px;
 	font-size: 2rem;

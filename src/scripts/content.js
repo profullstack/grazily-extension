@@ -1,6 +1,20 @@
-console.log("Content script loaded!");
-const NS = "grazilyapplier";
+// import { NS, _get } from "./utils/index.js";
+
+const NS = 'grazilyapplier';
+let get;
+console.log("Content script loaded!" + NS);
 const extapi = typeof browser === "undefined" ? chrome : browser;
+
+async function loadScript(url) {
+  const src = extapi.runtime.getURL(url);
+  return await import(src);
+}
+
+(async() => {
+  const utils = await loadScript("scripts/utils/index.js");
+  const { _get } = utils;
+  get = _get;
+})();
 
 extapi.runtime.onMessage.addListener(async (data) => {
   console.log("data2", data);
@@ -68,13 +82,54 @@ async function handleApplication(data, hostname) {
 
 async function populateSite(profile, site) {
   for (let key in site) {
-    if (key === "actions") continue;
-    console.log(key, site[key], profile[key], profile);
-    const { selector, val } = site[key];
+    if (key === "actions") {
+      for (let child in site[key]) {
+        console.log("child:", child);
+        if (child === "upload") {
+          const { selector, action } = site[key][child];
+          console.log("child selector:", selector, "child action:", action);
+          const el = document.querySelector(selector);
 
+          if (el && action) {
+            el[action]();
+            continue;
+          }
+        }
+      }
+      continue;
+    }
+
+    console.log(
+      "key:",
+      key,
+      "site[key]:",
+      site[key],
+      "profile[key]:",
+      profile[key],
+      "profile:",
+      profile
+    );
+    const { selector, val, get } = site[key];
+    console.log("selector:", selector, "val:", val, "get:", get);
+
+    if (get) {
+      const el = document.querySelector(selector);
+      console.log("get:", get(profile, get, "test"));
+      el.value = get(profile, get, "test");
+      continue;
+    }
     // populate the form
     const el = document.querySelector(selector);
-    el.value = profile[key];
+    const vals = val.split(" ");
+
+    // get values from job site object
+    for (let value of vals) {
+      if (vals.length > 1) {
+        el.value += ` ${profile[value]}`;
+      } else {
+        el.value = profile[value];
+      }
+    }
 
     // post process form fields (ie: focus the form field)
     if (site.actions?.set) {

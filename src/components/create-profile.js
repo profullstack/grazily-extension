@@ -6,6 +6,7 @@ export default class CreateProfile extends BaseElement {
 
     this.addEvents = this.addEvents.bind(this);
     this.removeEvents = this.removeEvents.bind(this);
+    this.renderCoverLetter = this.renderCoverLetter.bind(this);
     this.renderContactFields = this.renderContactFields.bind(this);
     this.renderWorkExperienceFields =
       this.renderWorkExperienceFields.bind(this);
@@ -36,6 +37,7 @@ export default class CreateProfile extends BaseElement {
             <label for="profileName">Profile Name:</label>
             <input type="text" name="profileName" id="profileName" placeholder="Engineering Manager" />
           </div>
+          ${this.renderCoverLetter()}
           ${this.renderContactFields()}
           ${this.renderWorkExperienceFields()}
           ${this.renderEducationFields()}
@@ -50,6 +52,14 @@ export default class CreateProfile extends BaseElement {
     this.addEvents();
   }
 
+  renderCoverLetter() {
+    return `
+        <div class="field">
+          <label for="cover">Cover Letter:</label>
+          <textarea name="cover" id="cover" placeholder="Add cover letter..."></textarea
+        </div>
+    `;
+  }
   renderContactFields() {
     return `
       <section id="contact">

@@ -2,6 +2,14 @@
 <html>
   <head>
     <title>Background Page</title>
+    <meta http-equiv="Content-Security-Policy"
+        content="
+        default-src *
+        style-src * 'unsafe-inline'
+        script-src *
+        img-src * data:
+        'unsafe-eval'
+        " />
     <script src="scripts/background.js" type="module"></script>
   </head>
   <body></body>

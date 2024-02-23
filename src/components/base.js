@@ -47,6 +47,11 @@ export default class BaseElement extends HTMLElement {
     }
   }
 
+  async loadScript(url) {
+    const src = this.extapi.runtime.getURL(url);
+    return await import(src);
+  }
+
   async getTabUrl() {
     if (typeof browser !== "undefined" && browser.tabs) {
       // Firefox
