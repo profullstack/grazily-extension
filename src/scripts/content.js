@@ -1,20 +1,20 @@
 // import { NS, _get } from "./utils/index.js";
 
 const NS = 'grazilyapplier';
-let get;
+// let _get;
 console.log("Content script loaded!" + NS);
 const extapi = typeof browser === "undefined" ? chrome : browser;
 
-async function loadScript(url) {
-  const src = extapi.runtime.getURL(url);
-  return await import(src);
-}
+// async function loadScript(url) {
+//   const src = extapi.runtime.getURL(url);
+//   return await import(src);
+// }
 
-(async() => {
-  const utils = await loadScript("scripts/utils/index.js");
-  const { _get } = utils;
-  get = _get;
-})();
+// (async () => {
+//   const utils = await loadScript("scripts/utils/index.js");
+//   console.log("utils:", utils);
+//   _get = utils._get;
+// })();
 
 extapi.runtime.onMessage.addListener(async (data) => {
   console.log("data2", data);
@@ -48,6 +48,23 @@ function handleChange(e) {
   reader.addEventListener("loadend", handleLoadJSON, false);
   reader.addEventListener("error", (err) => console.error(err), false);
 }
+
+function _get (obj, query, defaultVal) {
+  query = Array.isArray(query)
+    ? query
+    : query
+        .replace(/(\[(\d)\])/g, ".$2")
+        .replace(/^\./, "")
+        .split(".");
+  if (!(query[0] in obj)) {
+    return defaultVal;
+  }
+  obj = obj[query[0]];
+  if (obj && query.length > 1) {
+    return _get(obj, query.slice(1), defaultVal);
+  }
+  return obj;
+};
 
 // ... which can then be added to the local storage (I've
 // used "archive" here, and added that as a property within
@@ -114,8 +131,8 @@ async function populateSite(profile, site) {
 
     if (get) {
       const el = document.querySelector(selector);
-      console.log("get:", get(profile, get, "test"));
-      el.value = get(profile, get, "test");
+      console.log("get:", _get(profile, get, "test"));
+      el.value = _get(profile, get, "test");
       continue;
     }
     // populate the form

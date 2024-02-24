@@ -63,6 +63,30 @@ grazilyapplier.populate = {
       selector: '[data-qa="org-input"]',
       get: "work[0].company",
     },
+    cover: {
+      selector: "#additional-information",
+      val: "cover",
+    },
+    linkedin: {
+      selector: 'input[name="urls[LinkedIn]"]',
+      val: "urls[linkedin]",
+    },
+    twitter: {
+      selector: 'input[name="urls[Twitter]"]',
+      val: "urls[twitter]",
+    },
+    github: {
+      selector: 'input[name="urls[GitHub]"]',
+      val: "urls[github]",
+    },
+    portfolio: {
+      selector: 'input[name="urls[Portfolio]"]',
+      val: "urls[portfolio]",
+    },
+    other: {
+      selector: 'input[name="urls[Other]"]',
+      val: "urls[other]",
+    },
     // address1: {
     //   attr: "data-automation-id",
     //   val: "addressSection_addressLine1",

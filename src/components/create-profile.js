@@ -7,6 +7,7 @@ export default class CreateProfile extends BaseElement {
     this.addEvents = this.addEvents.bind(this);
     this.removeEvents = this.removeEvents.bind(this);
     this.renderCoverLetter = this.renderCoverLetter.bind(this);
+    this.renderURLs = this.renderURLs.bind(this);
     this.renderContactFields = this.renderContactFields.bind(this);
     this.renderWorkExperienceFields =
       this.renderWorkExperienceFields.bind(this);
@@ -39,6 +40,7 @@ export default class CreateProfile extends BaseElement {
           </div>
           ${this.renderCoverLetter()}
           ${this.renderContactFields()}
+          ${this.renderURLs()}
           ${this.renderWorkExperienceFields()}
           ${this.renderEducationFields()}
         </form>
@@ -58,6 +60,38 @@ export default class CreateProfile extends BaseElement {
           <label for="cover">Cover Letter:</label>
           <textarea name="cover" id="cover" placeholder="Add cover letter..."></textarea
         </div>
+    `;
+  }
+
+  renderURLs() {
+    return `
+      <section id="urls">
+        <h2>URLs</h2>
+        <div class="field">
+          <label for="linkedin">LinkedIn:</label>
+          <input type="text" name="urls[linkedin]" id="linkedin" />
+        </div>
+          <div class="field">
+          <label for="twitter">Twitter:</label>
+          <input type="text" name="urls[twitter]" id="twitter" />
+        </div>
+        <div class="field">
+          <label for="github">Github:</label>
+          <input type="text" name="urls[github]" id="github" />
+        </div>
+        <div class="field">
+          <label for="portfolio">Portfolio:</label>
+          <input type="text" name="urls[portfolio]" id="portfolio" />
+        </div>
+        <div class="field">
+          <label for="other">Other:</label>
+          <input type="text" name="urls[other]" id="other" />
+        </div>
+        <footer>
+          <button class="save">Save</button>
+          <button class="next" type="button">Next</button>
+        </footer>
+      </section>
     `;
   }
   renderContactFields() {
@@ -327,6 +361,7 @@ export default class CreateProfile extends BaseElement {
     const formData = new FormData(e.target);
     const work = [];
     const education = [];
+    const urls = {};
     const obj = {};
 
     obj.id = formData.id || null;
