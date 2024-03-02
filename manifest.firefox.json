@@ -1,14 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Grazily Applier",
-  "version": "1.0",
+  "version": "1.0.2",
   "permissions": [
     "contextMenus",
     "menus",
     "storage",
     "downloads",
     "activeTab",
-    "scripting",
     "tabs"
   ],
   "background": {

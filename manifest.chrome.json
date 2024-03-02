@@ -1,13 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Grazily Applier",
-  "version": "1.0",
+  "version": "1.0.2",
   "permissions": [
     "contextMenus",
     "storage",
     "downloads",
     "activeTab",
-    "scripting",
     "tabs"
   ],
   "background": {
@@ -25,15 +24,15 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "assets/icon-16.png",
-      "48": "assets/icon-48.png",
-      "128": "assets/icon-128.png"
+      "16": "assets/icons/favicon-16x16.png",
+      "32": "assets/icons/favicon-32x32.png",
+      "128": "assets/icons/favicon-128x128.png"
     }
   },
   "icons": {
-    "16": "assets/icon-16.png",
-    "48": "assets/icon-48.png",
-    "128": "assets/icon-128.png"
+    "16": "assets/icons/favicon-16x16.png",
+    "32": "assets/icons/favicon-32x32.png",
+    "128": "assets/icons/favicon-128x128.png"
   },
   "web_accessible_resources": [
     {
