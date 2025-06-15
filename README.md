@@ -1,5 +1,7 @@
 # Grazily Applier Web Extension
 
+[![Crypto Payment](https://paybadge.profullstack.com/badge.svg)](https://paybadge.profullstack.com/?tickers=btc%2Ceth%2Csol%2Cusdc)
+
 ## package for browsers
 
     npm run build:firefox
